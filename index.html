@@ -11,12 +11,27 @@
         radial-gradient(circle at 15% 20%, #12324a 0%, transparent 45%),
         radial-gradient(circle at 85% 80%, #2a153d 0%, transparent 42%),
         #0b1118;
+      background-size: 140% 140%, 160% 160%, 100% 100%;
+      background-position: 0% 0%, 100% 100%, 0% 0%;
       color: #ffffff;
       min-height: 100vh;
       margin: 0;
       padding: 0;
       position: relative;
       overflow: hidden;
+      animation: gradient-drift 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes gradient-drift {
+      0% {
+        background-position: 0% 0%, 100% 100%, 0% 0%;
+      }
+      50% {
+        background-position: 30% 25%, 75% 70%, 0% 0%;
+      }
+      100% {
+        background-position: 55% 35%, 50% 40%, 0% 0%;
+      }
     }
 
     .layout-container {
@@ -38,7 +53,26 @@
       pointer-events: none;
     }
 
+    #codeword-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      font-family: "Consolas", "Courier New", monospace;
+    }
+
+    .codeword {
+      position: absolute;
+      color: rgba(178, 247, 255, 0.38);
+      white-space: nowrap;
+      user-select: none;
+      will-change: transform, opacity;
+      text-shadow: 0 0 14px rgba(90, 210, 245, 0.36);
+    }
+
     .card {
+      box-sizing: border-box;
       background: linear-gradient(
         135deg,
         rgba(21, 38, 33, 0.42) 0%,
@@ -122,6 +156,7 @@
 </head>
 <body>
   <canvas id="particle-bg" aria-hidden="true"></canvas>
+  <div id="codeword-layer" aria-hidden="true"></div>
   <div class="layout-container">
     <div class="card">
       <img src="profile.jpg" alt="Profile Picture of Jan Kreme&#328;" class="profile" />
@@ -153,15 +188,28 @@
     (() => {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const canvas = document.getElementById("particle-bg");
+      const codewordLayer = document.getElementById("codeword-layer");
       const ctx = canvas.getContext("2d");
-      if (!ctx) return;
+      if (!ctx || !codewordLayer) return;
 
       const DPR = Math.min(window.devicePixelRatio || 1, 2);
       const isMobile = window.innerWidth < 768;
       const particleCount = isMobile ? 90 : 150;
       const particles = [];
+      const wordCount = isMobile ? 16 : 28;
+      const codewords = [];
       let width = 0;
       let height = 0;
+      const words = [
+        "git commit -m", "npm run build", "pnpm dev", "docker compose up",
+        "kubectl get pods", "terraform apply", "gh pr create", "curl -X POST",
+        "SELECT id, name", "EXPLAIN ANALYZE", "redis-cli", "localhost:3000",
+        "HTTP 200", "HTTP 500", "try/catch", "Promise.all()", "async/await",
+        "useEffect()", "useMemo()", "refactor(core)", "feature/landing",
+        "hotfix/auth", "main", "origin", "CI passed", "deploy:prod",
+        "rollback", "rate_limit", "webhook", "event_bus", "queue_worker",
+        "cache_hit", "edge_runtime", "observability", "tracing"
+      ];
 
       const rand = (min, max) => Math.random() * (max - min) + min;
       const onResize = () => {
@@ -185,7 +233,30 @@
         });
       }
 
+      const spawnCodeword = (word) => {
+        const el = document.createElement("span");
+        el.className = "codeword";
+        el.textContent = word;
+        const size = rand(12, 20);
+        const speed = rand(0.15, 0.55);
+        const drift = rand(-0.12, 0.12);
+        const alpha = rand(0.14, 0.3);
+        el.style.fontSize = size + "px";
+        el.style.opacity = String(alpha);
+        codewordLayer.appendChild(el);
+        return {
+          el,
+          x: rand(0, width),
+          y: rand(0, height),
+          vx: speed,
+          vy: drift
+        };
+      };
+
       onResize();
+      for (let i = 0; i < wordCount; i += 1) {
+        codewords.push(spawnCodeword(words[i % words.length]));
+      }
       window.addEventListener("resize", onResize);
 
       const draw = () => {
@@ -221,6 +292,19 @@
             ctx.lineTo(b.x, b.y);
             ctx.stroke();
           }
+        }
+
+        for (let i = 0; i < codewords.length; i += 1) {
+          const w = codewords[i];
+          w.x += w.vx;
+          w.y += w.vy;
+          if (w.x > width + 260) {
+            w.x = -220;
+            w.y = rand(0, height);
+          }
+          if (w.y < -30) w.y = height + 30;
+          if (w.y > height + 30) w.y = -30;
+          w.el.style.transform = "translate(" + w.x.toFixed(1) + "px, " + w.y.toFixed(1) + "px)";
         }
       };
 
