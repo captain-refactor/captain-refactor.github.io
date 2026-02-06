@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jan Kremeň</title>
+  <title>Jan Kreme&#328;</title>
   <style>
     body {
       font-family: sans-serif;
-      background: #121212;
+      background:
+        radial-gradient(circle at 15% 20%, #12324a 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, #2a153d 0%, transparent 42%),
+        #0b1118;
       color: #ffffff;
       display: flex;
       align-items: center;
@@ -15,6 +18,15 @@
       min-height: 100vh;
       margin: 0;
       padding: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #particle-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .card {
@@ -27,6 +39,8 @@
       gap: 2rem;
       max-width: 700px;
       flex-direction: row;
+      position: relative;
+      z-index: 1;
     }
 
     img.profile {
@@ -71,7 +85,6 @@
       fill: #61dafb;
     }
 
-    /* Responsive layout for narrow screens */
     @media (max-width: 600px) {
       .card {
         flex-direction: column;
@@ -85,10 +98,11 @@
   </style>
 </head>
 <body>
+  <canvas id="particle-bg" aria-hidden="true"></canvas>
   <div class="card">
-    <img src="profile.jpg" alt="Profile Picture of Jan Kremeň" class="profile" />
+    <img src="profile.jpg" alt="Profile Picture of Jan Kreme&#328;" class="profile" />
     <div class="info">
-      <h1>Jan Kremeň</h1>
+      <h1>Jan Kreme&#328;</h1>
       <div class="subtitle">Software Engineer</div>
       <div class="links">
         <div>
@@ -110,6 +124,93 @@
       </div>
     </div>
   </div>
+  <script>
+    (() => {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const canvas = document.getElementById("particle-bg");
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      const DPR = Math.min(window.devicePixelRatio || 1, 2);
+      const isMobile = window.innerWidth < 768;
+      const particleCount = isMobile ? 90 : 150;
+      const particles = [];
+      let width = 0;
+      let height = 0;
+
+      const rand = (min, max) => Math.random() * (max - min) + min;
+      const onResize = () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = Math.floor(width * DPR);
+        canvas.height = Math.floor(height * DPR);
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      };
+
+      for (let i = 0; i < particleCount; i += 1) {
+        particles.push({
+          x: rand(0, window.innerWidth),
+          y: rand(0, window.innerHeight),
+          r: rand(0.7, 2.2),
+          vx: rand(-0.2, 0.2),
+          vy: rand(-0.15, 0.15),
+          a: rand(0.25, 0.7)
+        });
+      }
+
+      onResize();
+      window.addEventListener("resize", onResize);
+
+      const draw = () => {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < particles.length; i += 1) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < -20) p.x = width + 20;
+          if (p.x > width + 20) p.x = -20;
+          if (p.y < -20) p.y = height + 20;
+          if (p.y > height + 20) p.y = -20;
+
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(97, 218, 251, " + p.a + ")";
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        for (let i = 0; i < particles.length; i += 1) {
+          for (let j = i + 1; j < particles.length; j += 1) {
+            const a = particles[i];
+            const b = particles[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist > 120) continue;
+            const alpha = (1 - dist / 120) * 0.2;
+            ctx.strokeStyle = "rgba(97, 218, 251, " + alpha + ")";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      };
+
+      if (reduceMotion) {
+        draw();
+        return;
+      }
+
+      const tick = () => {
+        draw();
+        requestAnimationFrame(tick);
+      };
+      tick();
+    })();
+  </script>
 </body>
 </html>
 
