@@ -1,4 +1,4 @@
-window.initParticlesBackground = function initParticlesBackground(options) {
+export function initParticlesBackground(options) {
   const canvas = options.canvas;
   const reduceMotion = options.reduceMotion;
   const isMobile = options.isMobile;
@@ -89,4 +89,4 @@ window.initParticlesBackground = function initParticlesBackground(options) {
       window.removeEventListener("resize", onResize);
     }
   };
-};
+}

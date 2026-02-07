@@ -1,4 +1,4 @@
-window.initCodewordsBackground = function initCodewordsBackground(options) {
+export function initCodewordsBackground(options) {
   const layer = options.layer;
   const reduceMotion = options.reduceMotion;
   const isMobile = options.isMobile;
@@ -85,4 +85,4 @@ window.initCodewordsBackground = function initCodewordsBackground(options) {
       }
     }
   };
-};
+}
