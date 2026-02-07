@@ -1,13 +1,19 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repository is a minimal GitHub Pages site.
-- `index.html`: main webpage markup and inline styles/scripts.
+This repository is a static GitHub Pages site with feature-split CSS/JS.
+- `index.html`: main webpage markup and asset imports.
+- `assets/css/base.css`: global layout primitives.
+- `assets/css/background.css`: animated background and background-layer styles.
+- `assets/css/card.css`: profile card and responsive card styles.
+- `assets/js/main.js`: ES module entrypoint and bootstrap.
+- `assets/js/particles.js`: particle canvas feature module.
+- `assets/js/codewords.js`: floating codeword feature module.
+- `assets/js/utils.js`: shared helpers.
 - `profile.jpg`: profile image asset referenced by the page.
 - `CNAME`: custom domain mapping for GitHub Pages.
-- `.git/`: version control metadata.
 
-Keep new assets in the repository root only if they are directly page-facing. If the site grows, prefer folders like `assets/images/` and `assets/css/` to keep `index.html` readable.
+Keep `index.html` focused on structure. Add new visual/behavior features in dedicated files under `assets/css/` and `assets/js/`.
 
 ## Build, Test, and Development Commands
 There is no build pipeline in this repo; it is static HTML served by GitHub Pages.
@@ -19,7 +25,9 @@ There is no build pipeline in this repo; it is static HTML served by GitHub Page
 - Use 2-space indentation in HTML/CSS blocks for consistency.
 - Prefer semantic HTML (`main`, `section`, `img`, `h1`) over generic wrappers.
 - Use lowercase, hyphenated filenames for new assets (example: `team-photo.jpg`).
-- Keep inline CSS concise; if styles expand, move them to a dedicated stylesheet.
+- Keep CSS and JS external (no inline `<style>` or inline `<script>` blocks for features).
+- Use ES modules for JavaScript (`export`/`import`) with `assets/js/main.js` as the single page entrypoint.
+- Keep feature boundaries clear: one file per feature where practical.
 
 ## Testing Guidelines
 No automated test framework is configured.
