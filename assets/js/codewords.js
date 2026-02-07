@@ -14,7 +14,9 @@ export function initCodewordsBackground(options) {
     "useEffect()", "useMemo()", "refactor(core)", "feature/landing",
     "hotfix/auth", "main", "origin", "CI passed", "deploy:prod",
     "rollback", "rate_limit", "webhook", "event_bus", "queue_worker",
-    "cache_hit", "edge_runtime", "observability", "tracing"
+    "cache_hit", "edge_runtime", "observability", "tracing", 
+    "monitoring", "load_balancer", "CDN", "SSL/TLS", "OAuth2.0",
+    "CORS", "JWT", "REST API", "GraphQL", "WebSocket", "gRPC"
   ];
   const codewords = [];
   let width = 0;
@@ -37,7 +39,7 @@ export function initCodewordsBackground(options) {
       el,
       x: rand(0, width),
       y: rand(0, height),
-      vx: rand(0.15, 0.55),
+      vx: rand(-0.55, 0.55),
       vy: rand(-0.12, 0.12)
     };
   };
