@@ -43,6 +43,6 @@ body {
   user-select: none;
   will-change: transform, opacity;
   text-shadow: 0 0 14px rgba(90, 210, 245, 0.36);
-  max-width: 100vw;
+  max-width: 100%;
   overflow: hidden;
 }
