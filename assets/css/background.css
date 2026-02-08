@@ -3,7 +3,7 @@ body {
     radial-gradient(circle at 15% 20%, #12324a 0%, transparent 45%),
     radial-gradient(circle at 85% 80%, #2a153d 0%, transparent 42%),
     #0b1118;
-  background-size: 140% 140%, 160% 160%, 100% 100%;
+  background-size: 100% 100%, 100% 100%, 100% 100%;
   background-position: 0% 0%, 100% 100%, 0% 0%;
   animation: gradient-drift 22s ease-in-out infinite alternate;
 }
@@ -43,4 +43,6 @@ body {
   user-select: none;
   will-change: transform, opacity;
   text-shadow: 0 0 14px rgba(90, 210, 245, 0.36);
+  max-width: 100vw;
+  overflow: hidden;
 }

@@ -73,9 +73,16 @@ svg {
   .card {
     flex-direction: column;
     text-align: center;
+    padding: 1.5rem;
   }
 
   .info {
     text-align: center;
+  }
+
+  img.profile {
+    width: 120px;
+    height: 120px;
+    margin-right: 0;
   }
 }
