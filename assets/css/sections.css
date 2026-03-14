@@ -1,0 +1,87 @@
+/* ── Hero ─────────────────────────────────────── */
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 7rem 2rem 5rem;
+}
+
+.hero-content {
+  max-width: 760px;
+}
+
+.hero-eyebrow {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #61dafb;
+  margin: 0 0 1.25rem;
+  opacity: 0.85;
+}
+
+.hero-title {
+  font-size: clamp(3.2rem, 10vw, 7.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0 0 1.75rem;
+}
+
+.hero-tagline {
+  font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+  color: #c2cedd;
+  margin: 0;
+  line-height: 1.65;
+}
+
+/* ── About ────────────────────────────────────── */
+
+.about {
+  padding: 6rem 2rem 8rem;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.about-card {
+  background: linear-gradient(
+    135deg,
+    rgba(18, 38, 58, 0.58) 0%,
+    rgba(11, 22, 38, 0.38) 100%
+  );
+  padding: 3rem 3.5rem;
+  border-radius: 20px;
+  border: 1px solid rgba(97, 218, 251, 0.16);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(97, 218, 251, 0.1);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  max-width: 720px;
+  width: 100%;
+}
+
+.about-card h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1.25rem;
+  color: #61dafb;
+}
+
+.about-card p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #c2cedd;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .about-card {
+    padding: 2rem;
+  }
+}
